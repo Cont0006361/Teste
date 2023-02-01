@@ -1,17 +1,22 @@
-<!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>Envie dados para a Planilha do Google</title>
-  <script src="https://apis.google.com/js/api.js"></script>
-  <script src="scripts.js"></script>
-  <link rel="stylesheet" type="text/css" href="style.css">
-</head>
-<body>
-  <form id="form">
-    <label for="input">Digite o texto:</label>
-    <input type="text" id="input" name="input">
-    <button type="submit">Enviar</button>
-  </form>
-</body>
+  <head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <div id="message"></div>
+    
+    <script>
+      function updateMessage() {
+        $.getJSON("https://spreadsheets.google.com/feeds/cells/1_khL1gjUifjGXxJMs2hR0wBbW7zGmENlYUN8-w20tPE/1/public/basic?alt=json",
+        function(data) {
+          var entry = data.feed.entry[1]; // coluna 1, linha 2
+          var message = entry.content.$t;
+          $("#message").text(message);
+        });
+      }
+      
+      updateMessage();
+      setInterval(updateMessage, 5000); // atualiza a cada 5 segundos
+    </script>
+  </body>
 </html>
