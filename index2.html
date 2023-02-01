@@ -3,20 +3,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <body>
-    <div id="message"></div>
+    <div id="message">Carregando mensagem...</div>
     
-    <script>
-      function updateMessage() {
-        $.getJSON("https://spreadsheets.google.com/feeds/cells/1_khL1gjUifjGXxJMs2hR0wBbW7zGmENlYUN8-w20tPE/1/public/basic?alt=json",
-        function(data) {
-          var entry = data.feed.entry[1]; // coluna 1, linha 2
-          var message = entry.content.$t;
-          $("#message").text(message);
-        });
-      }
-      
-      updateMessage();
-      setInterval(updateMessage, 5000); // atualiza a cada 5 segundos
-    </script>
+    <script src="script.js"></script>
   </body>
 </html>
