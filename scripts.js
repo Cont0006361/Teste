@@ -1,4 +1,4 @@
-var form = document.getElementById("formulario");
+var form = document.getElementById("form");
 form.addEventListener("submit", function(event) {
   event.preventDefault();
   gapi.load("client:auth2", function() {
