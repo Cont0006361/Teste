@@ -131,6 +131,63 @@ btnConfirm.addEventListener('click', ()=>{
 })
 
 
+function saveToGoogleSheet(listaUser) {
+  var API_KEY = "AIzaSyDbNiBBtTSzv5csaTMEJ";
+  var SPREADSHEET_ID = "1_-Dfi8MAHIy-UF4ZgtG-kKvxerqsgV-rdQIJcZhALyI";
+  
+  // Inicializa a API do Google Sheets
+  var sheets = new gapi.client.sheets({
+    apiKey: API_KEY,
+    discoveryDocs: ["https://sheets.googleapis.com/$discovery/rest?version=v4"]
+  });
+  
+  // Prepara as informações para serem adicionadas na planilha
+  var requests = [{
+    appendDimension: {
+      sheetId: 0,
+      dimension: "ROWS",
+      length: listaUser.length
+    }
+  }];
+  
+  // Adiciona cada item do listaUser como uma nova linha na planilha
+  for (var i = 0; i < listaUser.length; i++) {
+    var rowData = [];
+    for (var j = 0; j < listaUser[i].length; j++) {
+      rowData.push({
+        userEnteredValue: {
+          stringValue: listaUser[i][j]
+        }
+      });
+    }
+    requests.push({
+      updateCells: {
+        start: {
+          sheetId: 0,
+          rowIndex: i,
+          columnIndex: 0
+        },
+        rows: [{
+          values: rowData
+        }],
+        fields: "userEnteredValue"
+      }
+    });
+  }
+  
+  // Envia as solicitações para a API do Google Sheets
+  sheets.spreadsheets.batchUpdate({
+    spreadsheetId: SPREADSHEET_ID,
+    requests: requests
+  }, function(response) {
+    console.log(response);
+  });
+}
+
+// Adiciona um event listener no botão "Cadastrar" para salvar o listaUser na planilha do Google
+document.getElementById("cadastrar").addEventListener("click", function() {
+  saveToGoogleSheet(listaUser);
+});
 
   
   
